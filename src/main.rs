@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter, Result};
+use std::str::FromStr;
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -7,6 +8,21 @@ enum Suit {
     Diamonds,
     Hearts,
     Spades,
+}
+
+impl FromStr for Suit {
+    type Err = ();
+
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+        match s {
+            "c" => Ok(Suit::Clubs),
+            "d" => Ok(Suit::Diamonds),
+            "h" => Ok(Suit::Hearts),
+            "s" => Ok(Suit::Spades),
+
+            _ => Err(()),
+        }
+    }
 }
 
 
@@ -31,13 +47,37 @@ enum Face {
     Five,
     Six,
     Seven,
-    Height,
+    Eight,
     Nine,
     Ten,
     Jack,
     Queen,
     King,
     Ace,
+}
+
+
+impl FromStr for Face {
+    type Err = ();
+
+    fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
+        match s {
+            "2" => Ok(Face::Two),
+            "3" => Ok(Face::Three),
+            "4" => Ok(Face::Four),
+            "5" => Ok(Face::Five),
+            "6" => Ok(Face::Six),
+            "7" => Ok(Face::Seven),
+            "8" => Ok(Face::Eight),
+            "9" => Ok(Face::Nine),
+            "10" => Ok(Face::Ten),
+            "J" => Ok(Face::Jack),
+            "Q" => Ok(Face::Queen),
+            "K" => Ok(Face::King),
+            "A" => Ok(Face::Ace),
+            _ => Err(()),
+        }
+    }
 }
 
 
@@ -50,7 +90,7 @@ impl Display for Face {
             Face::Five => write!(f, "{}", "5"),
             Face::Six => write!(f, "{}", "6"),
             Face::Seven => write!(f, "{}", "7"),
-            Face::Height => write!(f, "{}", "8"),
+            Face::Eight => write!(f, "{}", "8"),
             Face::Nine => write!(f, "{}", "9"),
             Face::Ten => write!(f, "{}", "10"),
             Face::Jack => write!(f, "{}", "J"),
@@ -59,6 +99,7 @@ impl Display for Face {
             Face::Ace => write!(f, "{}", "A"),
         }
     }
+
 }
 
 #[derive(Debug)]
@@ -67,6 +108,25 @@ struct Card {
     face: Face,
 }
 
+#[allow(dead_code)]
+impl Card {
+    fn new(face: Face, suit: Suit) -> Card {
+        Card {
+            face: face,
+            suit: suit,
+
+        }
+    }
+
+    fn from_string(face: &str, suit: &str) -> Card {
+        Card {
+            face: Face::from_str(face).unwrap(),
+            suit: Suit::from_str(suit).unwrap(),
+        }
+
+    }
+
+}
 
 impl Display for Card {
     fn fmt(&self, f: &mut Formatter) -> Result {
@@ -96,6 +156,12 @@ enum Rank {
 struct Hand {
     cards: Vec<Card>,
 }
+#[allow(dead_code)]
+impl Hand {
+    fn new(cards: Vec<Card>) -> Hand {
+        Hand { cards: cards }
+    }
+}
 
 impl Display for Hand {
     fn fmt(&self, f: &mut Formatter) -> Result {
@@ -110,17 +176,10 @@ impl Display for Hand {
     }
 }
 
-#[allow(dead_code)]
 fn main() {
-    let card = Card {
-        suit: Suit::Clubs,
-        face: Face::Ten,
-    };
-    println!("My card : {:?}", card.to_string());
-    println!("My card face : {:?}", card.face.to_string());
-    println!("My card suit : {:?}", card.suit.to_string());
-    //let hand = vec![card];
-    let hand = Hand { cards: vec![card] };
+    let card = Card::from_string("2", "c");
+    let cards = vec![card];
+    let hand = Hand::new(cards);
 
     println!("My hand : {:?}", hand.to_string());
 }
