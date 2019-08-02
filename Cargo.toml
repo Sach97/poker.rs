@@ -1,0 +1,7 @@
+[package]
+name = "poker"
+version = "0.1.0"
+authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
+edition = "2018"
+
+[dependencies]
