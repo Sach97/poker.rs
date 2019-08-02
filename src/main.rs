@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter, Result};
+
 #[derive(Debug)]
 #[allow(dead_code)]
 enum Suit {
@@ -7,17 +9,18 @@ enum Suit {
     Spades,
 }
 
-impl Suit {
-    pub fn to_str(self) -> &'static str {
-        match self {
-            Suit::Clubs => "c",
-            Suit::Diamonds => "d",
-            Suit::Hearts => "h",
-            Suit::Spades => "s",
+
+impl Display for Suit {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        match *self {
+            Suit::Clubs => write!(f, "{}", "c"),
+            Suit::Diamonds => write!(f, "{}", "d"),
+            Suit::Hearts => write!(f, "{}", "h"),
+            Suit::Spades => write!(f, "{}", "s"),
         }
     }
-
 }
+
 
 #[allow(dead_code)]
 #[derive(Debug)]
@@ -37,22 +40,23 @@ enum Face {
     Ace,
 }
 
-impl Face {
-    fn to_str(self) -> &'static str {
-        match self {
-            Face::Two => "2",
-            Face::Three => "3",
-            Face::Four => "4",
-            Face::Five => "5",
-            Face::Six => "6",
-            Face::Seven => "7",
-            Face::Height => "8",
-            Face::Nine => "9",
-            Face::Ten => "10",
-            Face::Jack => "J",
-            Face::Queen => "Q",
-            Face::King => "K",
-            Face::Ace => "A",
+
+impl Display for Face {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        match *self {
+            Face::Two => write!(f, "{}", "2"),
+            Face::Three => write!(f, "{}", "3"),
+            Face::Four => write!(f, "{}", "4"),
+            Face::Five => write!(f, "{}", "5"),
+            Face::Six => write!(f, "{}", "6"),
+            Face::Seven => write!(f, "{}", "7"),
+            Face::Height => write!(f, "{}", "8"),
+            Face::Nine => write!(f, "{}", "9"),
+            Face::Ten => write!(f, "{}", "10"),
+            Face::Jack => write!(f, "{}", "J"),
+            Face::Queen => write!(f, "{}", "Q"),
+            Face::King => write!(f, "{}", "K"),
+            Face::Ace => write!(f, "{}", "A"),
         }
     }
 }
@@ -63,12 +67,10 @@ struct Card {
     face: Face,
 }
 
-impl Card {
-    fn to_string(self) -> String {
-        let mut result = String::new();
-        result.push_str(self.face.to_str());
-        result.push_str(self.suit.to_str());
-        return result;
+
+impl Display for Card {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        write!(f, "{}{}", &self.face.to_string(), &self.suit.to_string())
     }
 }
 
@@ -91,10 +93,22 @@ enum Rank {
 }
 
 #[allow(dead_code)]
-enum Hand {
-    Winner,
+struct Hand {
+    cards: Vec<Card>,
 }
 
+impl Display for Hand {
+    fn fmt(&self, f: &mut Formatter) -> Result {
+        let mut str = "";
+        for card in &self.cards {
+            f.write_str(str)?;
+            f.write_str(&card.to_string())?;
+            str = ", ";
+        }
+        Ok(())
+
+    }
+}
 
 #[allow(dead_code)]
 fn main() {
@@ -102,6 +116,11 @@ fn main() {
         suit: Suit::Clubs,
         face: Face::Ten,
     };
+    println!("My card : {:?}", card.to_string());
+    println!("My card face : {:?}", card.face.to_string());
+    println!("My card suit : {:?}", card.suit.to_string());
     //let hand = vec![card];
-    println!("My card : {:?}", card.to_string())
+    let hand = Hand { cards: vec![card] };
+
+    println!("My hand : {:?}", hand.to_string());
 }
