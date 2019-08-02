@@ -118,7 +118,8 @@ impl Card {
         }
     }
 
-    fn from_string(face: &str, suit: &str) -> Card {
+    fn from_string(card: &str) -> Card {
+        let (face, suit) = card.split_at(1);
         Card {
             face: Face::from_str(face).unwrap(),
             suit: Suit::from_str(suit).unwrap(),
@@ -177,9 +178,9 @@ impl Display for Hand {
 }
 
 fn main() {
-    let card = Card::from_string("2", "c");
+    let card = Card::from_string("2c");
     let cards = vec![card];
     let hand = Hand::new(cards);
-
-    println!("My hand : {:?}", hand.to_string());
+    //assert_eq!(card,Card::new(Face::Two, Suit::Clubs) );
+    println!("{}", hand);
 }
