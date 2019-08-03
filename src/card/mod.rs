@@ -6,21 +6,15 @@ use suit::Suit;
 mod face;
 use face::Face;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub struct Card {
     suit: Suit,
     face: Face,
 }
 
-// impl PartialEq for Card {
-//     fn eq(&self, other: &Self) -> bool {
-//         (self.face == other.face) && (self.suit == self.suit)
-//     }
-// }
-
 #[allow(dead_code)]
 impl Card {
-    fn new(face: Face, suit: Suit) -> Card {
+    pub fn new(face: Face, suit: Suit) -> Card {
         Card {
             face: face,
             suit: suit,
