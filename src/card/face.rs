@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-#[derive(Debug,PartialEq,Copy,Clone)]
+#[derive(Debug, PartialEq, Copy, Clone)]
 pub enum Face {
     Two,
     Three,
@@ -12,18 +12,11 @@ pub enum Face {
     Eight,
     Nine,
     Ten,
-    Jack,
+    Jack, //royal
     Queen,
     King,
     Ace,
 }
-
-// impl PartialEq for Face {
-//     fn eq(&self, other: &Self) -> bool {
-//         self.face == other.face
-//     }
-// }
-// impl Eq for Face {}
 
 impl FromStr for Face {
     type Err = ();
