@@ -1,12 +1,13 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
+use std::cmp::Ordering;
 
 pub mod suit;
 use suit::Suit;
 pub mod face;
 use face::Face;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq,Eq,Copy,Clone)]
 pub struct Card {
     suit: Suit,
     face: Face,
@@ -38,3 +39,24 @@ impl Display for Card {
         write!(f, "{}{}", &self.face.to_string(), &self.suit.to_string())
     }
 }
+
+// impl PartialOrd for Card {
+//     fn partial_cmp(&self, other: &Card) -> Option<Ordering> {
+//         self.face.partial_cmp(&other.face);
+//     }
+// }
+
+impl PartialOrd for Card {
+    fn partial_cmp(&self, other: &Card) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Card {
+    fn cmp(&self, other: &Card) -> Ordering {
+        self.face.cmp(&other.face)
+    }
+}
+
+
+

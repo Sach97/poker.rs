@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-#[derive(Debug,PartialEq,Copy,Clone)]
+#[derive(Debug,PartialEq,Copy,Clone,Eq)]
 pub enum Suit {
     Clubs,
     Diamonds,

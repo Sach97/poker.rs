@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord,Copy,Clone)]
 pub enum Face {
     Two,
     Three,
