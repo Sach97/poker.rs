@@ -1,5 +1,5 @@
 mod card;
-use card::Card;
+//use card::Card;
 mod hand;
 use hand::Hand;
 
@@ -26,9 +26,9 @@ enum Rank {
 
 
 fn main() {
-    let card = Card::from_string("2c");
-    let card2 = Card::from_string("2h");
-    let cards = vec![card, card2];
-    let hand = Hand::new(cards);
+    // let card = Card::from_string("2c");
+    // let card2 = Card::from_string("2h");
+    // let cards = vec![card, card2];
+    let hand = Hand::from_vec(vec!["2h", "2c"]);
     println!("{}", hand);
 }

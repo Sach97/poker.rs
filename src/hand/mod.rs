@@ -12,6 +12,11 @@ impl Hand {
     pub fn new(cards: Vec<Card>) -> Hand {
         Hand { cards: cards }
     }
+
+    pub fn from_vec(cards: Vec<&str>) -> Hand {
+        let cast_cards: Vec<Card> = cards.iter().map(|card| Card::from_string(card)).collect();
+        Hand { cards: cast_cards }
+    }
 }
 
 impl Display for Hand {
