@@ -1,9 +1,9 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-mod suit;
+pub mod suit;
 use suit::Suit;
-mod face;
+pub mod face;
 use face::Face;
 
 #[derive(Debug, PartialEq, Copy, Clone)]

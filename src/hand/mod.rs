@@ -1,3 +1,4 @@
+pub mod rank;
 use std::fmt::{Display, Formatter, Result};
 
 use crate::card::Card;

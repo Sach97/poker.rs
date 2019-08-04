@@ -124,3 +124,44 @@ impl PartialOrd for Rank {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+
+    #[test]
+    fn test_sort() {
+        let mut ranks = vec![
+            Rank::RoyalFlush,
+            Rank::StraightFlush,
+            Rank::FourOfAKind,
+            Rank::FullHouse,
+            Rank::Flush,
+            Rank::Straight,
+            Rank::ThreeOfAKind,
+            Rank::TwoPairs,
+            Rank::Pair,
+            Rank::HighCard,
+        ];
+        ranks.sort();
+
+        assert_eq!(
+            ranks,
+            vec![
+
+                Rank::HighCard,
+                Rank::Pair,
+                Rank::TwoPairs,
+                Rank::ThreeOfAKind,
+                Rank::Straight,
+                Rank::Flush,
+                Rank::FullHouse,
+                Rank::FourOfAKind,
+                Rank::StraightFlush,
+                Rank::RoyalFlush,
+            ]
+        )
+    }
+
+}
