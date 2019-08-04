@@ -6,7 +6,7 @@ use suit::Suit;
 pub mod face;
 use face::Face;
 
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq)]
 pub struct Card {
     suit: Suit,
     face: Face,

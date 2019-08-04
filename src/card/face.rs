@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Face {
     Two,
     Three,
@@ -59,6 +59,53 @@ impl Display for Face {
             Face::King => write!(f, "{}", "K"),
             Face::Ace => write!(f, "{}", "A"),
         }
+    }
+
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_sort_faces() {
+        let mut faces = vec![
+            Face::Two,
+            Face::Three,
+            Face::Four,
+            Face::Five,
+            Face::Six,
+            Face::Seven,
+            Face::Eight,
+            Face::Nine,
+            Face::Ten,
+            Face::Jack,
+            Face::Queen,
+            Face::King,
+            Face::Ace,
+        ];
+
+        faces.sort();
+
+        assert_eq!(
+            faces,
+            vec![
+                Face::Two,
+                Face::Three,
+                Face::Four,
+                Face::Five,
+                Face::Six,
+                Face::Seven,
+                Face::Eight,
+                Face::Nine,
+                Face::Ten,
+                Face::Jack,
+                Face::Queen,
+                Face::King,
+                Face::Ace,
+            ]
+        )
     }
 
 }
