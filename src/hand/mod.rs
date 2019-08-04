@@ -13,6 +13,7 @@ impl Hand {
         Hand { cards: cards }
     }
 
+    #[allow(dead_code)]
     pub fn from_vec(cards: Vec<&str>) -> Hand {
         let cast_cards: Vec<Card> = cards.iter().map(|card| Card::from_string(card)).collect();
         Hand { cards: cast_cards }
