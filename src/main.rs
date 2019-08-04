@@ -9,12 +9,4 @@ enum Player {
     Ranked,
 }
 
-
-fn main() {
-    // let card = Card::from_string("2c");
-    // let card2 = Card::from_string("2h");
-    // let cards = vec![card, card2];
-    //let hand = Hand::from_vec(vec!["2h", "2c"]);
-    // println!("{}", hand);
-    //assert!(Rank::RoyalFlush > Rank::StraightFlush)
-}
+fn main() {}
