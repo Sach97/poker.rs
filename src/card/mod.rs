@@ -1,16 +1,15 @@
-use std::fmt::{Display, Formatter, Result};
-use std::str::FromStr;
 use std::cmp::Ordering;
+use std::str::FromStr;
 
 pub mod suit;
 use suit::Suit;
 pub mod face;
 use face::Face;
 
-#[derive(Debug, PartialEq,Eq,Copy,Clone)]
+#[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub struct Card {
-    suit: Suit,
-    face: Face,
+    pub suit: Suit,
+    pub face: Face,
 }
 
 #[allow(dead_code)]
@@ -34,15 +33,9 @@ impl Card {
 
 }
 
-impl Display for Card {
-    fn fmt(&self, f: &mut Formatter) -> Result {
-        write!(f, "{}{}", &self.face.to_string(), &self.suit.to_string())
-    }
-}
-
-// impl PartialOrd for Card {
-//     fn partial_cmp(&self, other: &Card) -> Option<Ordering> {
-//         self.face.partial_cmp(&other.face);
+// impl Display for Card {
+//     fn fmt(&self, f: &mut Formatter) -> Result {
+//         write!(f, "{}{}", &self.face.to_string(), &self.suit.to_string())
 //     }
 // }
 
@@ -57,6 +50,4 @@ impl Ord for Card {
         self.face.cmp(&other.face)
     }
 }
-
-
 

@@ -2,9 +2,11 @@
 
 //https://www.fgbradleys.com/et_poker.asp
 
+//!  - Inner line doc
 #[allow(dead_code)]
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-enum Rank {
+pub enum Rank {
+    None,
     HighCard,
     Pair,
     TwoPairs,
@@ -39,7 +41,6 @@ mod tests {
         assert_eq!(
             ranks,
             vec![
-
                 Rank::HighCard,
                 Rank::Pair,
                 Rank::TwoPairs,
