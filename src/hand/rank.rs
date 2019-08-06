@@ -6,7 +6,6 @@
 #[allow(dead_code)]
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Rank {
-    None,
     HighCard,
     Pair,
     TwoPairs,
