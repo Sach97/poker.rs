@@ -20,22 +20,6 @@ impl Default for Hand {
 
 }
 
-    fn handle_three_or_pairs(mut faces : Vec<Face>) -> Rank { //hacky way, put this in the trait and fight the compiler
-        let (_, _dup_hand) = faces.partition_dedup();
-        match _dup_hand.len() {   
-         0 => Rank::TwoPairs,
-         _ => Rank::ThreeOfAKind,
-        }
-    }
-    
-    fn handle_four_or_full(mut faces : Vec<Face>) -> Rank { //hacky way, put this in the trait and fight the compiler
-        let (_, _dup_hand) = faces.partition_dedup();
-        match _dup_hand.len() {   
-         2 => Rank::FourOfAKind,
-         _ => Rank::FullHouse,
-        }
-    }
-
 #[allow(dead_code)]
 impl Hand {
 
@@ -70,9 +54,25 @@ impl Hand {
         let (_, _dup_hand) = faces.partition_dedup();
         match _dup_hand.len() {
          1 => Rank::Pair,
-         2 => handle_three_or_pairs(_dup_hand.to_vec()),
-         3 => handle_four_or_full(_dup_hand.to_vec()),
+         2 => Hand::handle_three_or_pairs(_dup_hand.to_vec()),
+         3 => Hand::handle_four_or_full(_dup_hand.to_vec()),
          _ => Rank::HighCard,
+        }
+    }
+
+    fn handle_three_or_pairs(mut faces : Vec<Face>) -> Rank { //hacky way, put this in the trait and fight the compiler
+        let (_, _dup_hand) = faces.partition_dedup();
+        match _dup_hand.len() {   
+         0 => Rank::TwoPairs,
+         _ => Rank::ThreeOfAKind,
+        }
+    }
+    
+    fn handle_four_or_full(mut faces : Vec<Face>) -> Rank { //hacky way, put this in the trait and fight the compiler
+        let (_, _dup_hand) = faces.partition_dedup();
+        match _dup_hand.len() {   
+         2 => Rank::FourOfAKind,
+         _ => Rank::FullHouse,
         }
     }
 
