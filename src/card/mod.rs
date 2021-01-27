@@ -1,6 +1,6 @@
 use itertools::Itertools;
+use std::cmp::Ordering;
 use std::str::FromStr;
-use std::{cmp::Ordering, iter};
 
 pub mod suit;
 use suit::Suit;
