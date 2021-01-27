@@ -1,9 +1,9 @@
 use std::fmt::{Display, Formatter, Result};
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord,Copy,Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub enum Face {
-    Two,
+    Two = 2,
     Three,
     Four,
     Five,
@@ -41,7 +41,6 @@ impl FromStr for Face {
     }
 }
 
-
 impl Display for Face {
     fn fmt(&self, f: &mut Formatter) -> Result {
         match *self {
@@ -60,9 +59,7 @@ impl Display for Face {
             Face::Ace => write!(f, "{}", "A"),
         }
     }
-
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -107,5 +104,4 @@ mod tests {
             ]
         )
     }
-
 }
