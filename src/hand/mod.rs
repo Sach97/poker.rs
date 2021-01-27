@@ -27,7 +27,7 @@ impl Hand {
         Hand { 0: cards }
     }
 
-    pub fn from_vec( mut cards: Vec<&str>) -> Self {
+    pub fn from_vec(mut cards: Vec<&str>) -> Self {
         cards.sort();
         Hand {
             0: cards.iter().map(|card| Card::from_string(card)).collect(),
@@ -111,7 +111,7 @@ impl Hand {
         //hacky way, put this in the trait and fight the compiler
         let (_, _dup_hand) = faces.partition_dedup();
         match _dup_hand.len() {
-            2 => Rank::FourOfAKind,
+            2 => Rank::FourOfAKind(faces.last().unwrap().to_owned()),
             _ => Rank::FullHouse,
         }
     }
@@ -188,7 +188,7 @@ mod tests {
         let mut hand = Hand::from_vec(vec!["2d", "2c", "2s", "2h", "9c"]);
         let rank = hand.rank();
         println!("{:?}", rank);
-        assert_eq!(rank, Rank::FourOfAKind);
+        assert_eq!(rank, Rank::FourOfAKind(Face::Two));
     }
 
     #[test]

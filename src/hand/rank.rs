@@ -1,3 +1,5 @@
+use crate::card::face::Face;
+
 //use std::cmp::Ordering;
 
 //https://www.fgbradleys.com/et_poker.asp
@@ -12,14 +14,14 @@ pub enum Rank {
     Straight,
     Flush,
     FullHouse,
-    FourOfAKind,
+    FourOfAKind(Face),
     StraightFlush,
     RoyalFlush,
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::hand;
+    use crate::{card::face::Face, hand};
 
     use super::*;
 
@@ -33,13 +35,34 @@ mod tests {
         assert_eq!(opponent_rank, Rank::RoyalFlush);
         assert_eq!(opponent_rank > player_rank, true);
     }
+    #[test]
+    fn compare_two_hands2() {
+        let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::StraightFlush);
+        let mut opponent = hand::Hand::from_vec(vec!["As", "Ad", "Ac", "Ah", "Jd"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::FourOfAKind(Face::Ace));
+        assert_eq!(player_rank > opponent_rank, true);
+    }
+
+    #[test]
+    fn compare_two_hands3() {
+        let mut player = hand::Hand::from_vec(vec!["As", "Ah", "2h", "Ad", "Ac"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::FourOfAKind(Face::Ace));
+        let mut opponent = hand::Hand::from_vec(vec!["Js", "Jd", "Jc", "Jh", "3d"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::FourOfAKind(Face::Jack));
+        assert_eq!(player_rank > opponent_rank, true);
+    }
 
     #[test]
     fn test_sort_ranks() {
         let mut ranks = vec![
             Rank::RoyalFlush,
             Rank::StraightFlush,
-            Rank::FourOfAKind,
+            Rank::FourOfAKind(Face::Ace),
             Rank::FullHouse,
             Rank::Flush,
             Rank::Straight,
@@ -59,7 +82,7 @@ mod tests {
                 Rank::Straight,
                 Rank::Flush,
                 Rank::FullHouse,
-                Rank::FourOfAKind,
+                Rank::FourOfAKind(Face::Ace),
                 Rank::StraightFlush,
                 Rank::RoyalFlush,
             ]
