@@ -1,5 +1,6 @@
-use std::cmp::Ordering;
+use itertools::Itertools;
 use std::str::FromStr;
+use std::{cmp::Ordering, iter};
 
 pub mod suit;
 use suit::Suit;
@@ -18,19 +19,37 @@ impl Card {
         Card {
             face: face,
             suit: suit,
-
         }
     }
 
     pub fn from_string(card: &str) -> Card {
-        let (face, suit) = card.split_at(1);
-        Card {
-            face: Face::from_str(face).unwrap(),
-            suit: Suit::from_str(suit).unwrap(),
+        let card_chars = card.chars();
+        let count = card_chars.clone().count();
+
+        if count == 3 {
+            let split: Vec<String> = card_chars
+                .group_by(|&x| match x {
+                    '\u{0030}'..='\u{0039}' => true,
+                    _ => false,
+                })
+                .into_iter()
+                .map(|(_, r)| r.collect())
+                .collect();
+            let num_pair: (&String, &String) = (&split[0], &split[1]);
+
+            let (face, suit) = num_pair;
+            Card {
+                face: Face::from_str(&face).unwrap(),
+                suit: Suit::from_str(&suit).unwrap(),
+            }
+        } else {
+            let (face, suit) = card.split_at(1);
+            Card {
+                face: Face::from_str(&face).unwrap(),
+                suit: Suit::from_str(&suit).unwrap(),
+            }
         }
-
     }
-
 }
 
 // impl Display for Card {
@@ -51,3 +70,12 @@ impl Ord for Card {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn deserialize_card() {
+        let card = Card::from_string("10s");
+        assert_eq!(card, Card::new(Face::Ten, Suit::Spades));
+    }
+}

@@ -5,6 +5,7 @@ authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
 edition = "2018"
 
 [dependencies]
+itertools = "0.10.0"
 
 
 [lib]
