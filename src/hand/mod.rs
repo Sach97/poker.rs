@@ -2,6 +2,7 @@
 pub mod rank;
 use rank::Rank;
 use std::slice::Windows;
+
 //use std::fmt::{Display, Formatter, Result};
 //use std::array::FixedSizeArray;
 
@@ -52,12 +53,26 @@ impl Hand {
     pub fn rank(&mut self) -> Rank {
         let mut faces = self.faces();
         faces.sort();
-        let (_, _dup_hand) = faces.partition_dedup();
-        match _dup_hand.len() {
+        let (dedup_hand, dup_hand) = faces.partition_dedup();
+        dedup_hand.sort();
+        dup_hand.sort();
+
+        match dup_hand.len() {
             0 => self.handle_straight_or_flush(),
-            1 => Rank::Pair,
-            2 => self.handle_three_or_pairs(_dup_hand.to_vec()),
-            3 => self.handle_four_or_full(_dup_hand.to_vec()),
+            1 => {
+                let index = dedup_hand
+                    .iter()
+                    .position(|x| *x == *dup_hand.first().unwrap())
+                    .unwrap();
+                let mut remain = dedup_hand.to_owned();
+                remain.remove(index);
+                Rank::Pair(
+                    dup_hand.last().unwrap().to_owned(),
+                    remain.last().unwrap().to_owned(),
+                )
+            }
+            2 => self.handle_three_or_pairs(dup_hand.to_vec()),
+            3 => self.handle_four_or_full(dup_hand.to_vec()),
             _ => Rank::HighCard,
         }
     }
@@ -84,7 +99,7 @@ impl Hand {
 
     fn handle_straight_or_flush(&mut self) -> Rank {
         let highest = self.faces().last().unwrap().to_owned();
-        
+
         if self.is_royal_flush() {
             Rank::RoyalFlush
         } else {
@@ -113,7 +128,7 @@ impl Hand {
         //hacky way, put this in the trait and fight the compiler
         let (_, _dup_hand) = faces.partition_dedup();
         match _dup_hand.len() {
-            2 => Rank::FourOfAKind(faces.last().unwrap().to_owned()),
+            2 => Rank::FourOfAKind(_dup_hand.last().unwrap().to_owned()),
             _ => Rank::FullHouse,
         }
     }
@@ -134,7 +149,7 @@ mod tests {
         let mut hand = Hand::from_vec(vec!["2d", "2h", "3d", "5s", "9c"]);
         let rank = hand.rank();
         println!("{:?}", rank);
-        assert_eq!(rank, Rank::Pair);
+        assert_eq!(rank, Rank::Pair(Face::Two, Face::Nine));
     }
 
     #[test]

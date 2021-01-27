@@ -8,7 +8,7 @@ use crate::card::face::Face;
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Rank {
     HighCard,
-    Pair,
+    Pair(Face, Face),
     TwoPairs,
     ThreeOfAKind,
     Straight,
@@ -80,6 +80,17 @@ mod tests {
     }
 
     #[test]
+    fn compare_two_hands6() {
+        let mut player = hand::Hand::from_vec(vec!["6s", "Ad", "7h", "4s", "As"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::Pair(Face::Ace, Face::Seven));
+        let mut opponent = hand::Hand::from_vec(vec!["Ah", "Ac", "5h", "6h", "9s"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::Pair(Face::Ace, Face::Nine));
+        assert_eq!(opponent_rank > player_rank, true);
+    }
+
+    #[test]
     fn test_sort_ranks() {
         let mut ranks = vec![
             Rank::RoyalFlush,
@@ -88,9 +99,10 @@ mod tests {
             Rank::FullHouse,
             Rank::Flush(Face::Nine),
             Rank::Straight,
+            Rank::Pair(Face::Ace, Face::Seven),
             Rank::ThreeOfAKind,
             Rank::TwoPairs,
-            Rank::Pair,
+            Rank::Pair(Face::Ace, Face::Nine),
             Rank::HighCard,
         ];
         ranks.sort();
@@ -98,7 +110,8 @@ mod tests {
             ranks,
             vec![
                 Rank::HighCard,
-                Rank::Pair,
+                Rank::Pair(Face::Ace, Face::Seven),
+                Rank::Pair(Face::Ace, Face::Nine),
                 Rank::TwoPairs,
                 Rank::ThreeOfAKind,
                 Rank::Straight,
