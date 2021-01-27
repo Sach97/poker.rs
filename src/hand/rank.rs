@@ -12,7 +12,7 @@ pub enum Rank {
     TwoPairs,
     ThreeOfAKind,
     Straight,
-    Flush,
+    Flush(Face),
     FullHouse,
     FourOfAKind(Face),
     StraightFlush,
@@ -58,13 +58,24 @@ mod tests {
     }
 
     #[test]
+    fn compare_two_hands4() {
+        let mut player = hand::Hand::from_vec(vec!["As", "3s", "4s", "8s", "2s"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::Flush(Face::Ace));
+        let mut opponent = hand::Hand::from_vec(vec!["2h","3h", "5h", "6h", "7h"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::Flush(Face::Seven));
+        assert_eq!(player_rank > opponent_rank, true);
+    }
+
+    #[test]
     fn test_sort_ranks() {
         let mut ranks = vec![
             Rank::RoyalFlush,
             Rank::StraightFlush,
             Rank::FourOfAKind(Face::Ace),
             Rank::FullHouse,
-            Rank::Flush,
+            Rank::Flush(Face::Nine),
             Rank::Straight,
             Rank::ThreeOfAKind,
             Rank::TwoPairs,
@@ -80,7 +91,7 @@ mod tests {
                 Rank::TwoPairs,
                 Rank::ThreeOfAKind,
                 Rank::Straight,
-                Rank::Flush,
+                Rank::Flush(Face::Nine),
                 Rank::FullHouse,
                 Rank::FourOfAKind(Face::Ace),
                 Rank::StraightFlush,
