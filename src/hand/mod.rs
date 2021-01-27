@@ -19,7 +19,7 @@ impl PartialOrd for Hand {
     }
 }
 
-impl Ord for &mut Hand {
+impl Ord for Hand {
     fn cmp(&self, other: &Self) -> Ordering {
         let rank = self.rank();
         let other_rank = other.rank();
