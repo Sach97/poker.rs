@@ -23,15 +23,16 @@ mod tests {
 
     use super::*;
 
-    // #[test]
-    // fn it_works() {
-    //     let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
-    //     let player_rank = player.rank();
-    //     // assert_eq!(player_rank, Rank::Flush);
-    //     let mut opponent = hand::Hand::from_vec(vec!["Ks", "As", "10s", "Qs", "Js"]);
-    //     let opponent_rank = opponent.rank();
-    //     assert_eq!(opponent_rank  < player_rank, false);
-    // }
+    #[test]
+    fn compare_two_hands() {
+        let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::StraightFlush);
+        let mut opponent = hand::Hand::from_vec(vec!["Js", "Qs", "Ks", "As", "10s"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::RoyalFlush);
+        assert_eq!(opponent_rank > player_rank, true);
+    }
 
     #[test]
     fn test_sort_ranks() {

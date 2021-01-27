@@ -78,4 +78,26 @@ mod tests {
         let card = Card::from_string("10s");
         assert_eq!(card, Card::new(Face::Ten, Suit::Spades));
     }
+
+    #[test]
+    fn test_card_ord() {
+        let mut cards = vec![
+            Card::from_string("Ks"),
+            Card::from_string("As"),
+            Card::from_string("10s"),
+            Card::from_string("Qs"),
+            Card::from_string("Js"),
+        ];
+        cards.sort();
+        assert_eq!(
+            cards,
+            vec![
+                Card::from_string("10s"),
+                Card::from_string("Js"),
+                Card::from_string("Qs"),
+                Card::from_string("Ks"),
+                Card::from_string("As")
+            ]
+        )
+    }
 }

@@ -22,11 +22,13 @@ impl Default for Hand {
 
 #[allow(dead_code)]
 impl Hand {
-    pub fn new(cards: Vec<Card>) -> Self {
+    pub fn new(mut cards: Vec<Card>) -> Self {
+        cards.sort();
         Hand { 0: cards }
     }
 
-    pub fn from_vec(cards: Vec<&str>) -> Self {
+    pub fn from_vec( mut cards: Vec<&str>) -> Self {
+        cards.sort();
         Hand {
             0: cards.iter().map(|card| Card::from_string(card)).collect(),
         }
@@ -71,11 +73,16 @@ impl Hand {
         self.suits().windows(2).all(|w| w[0] == w[1])
     }
 
-    fn is_royal_flush(&self) -> bool {
+    fn is_straight_flush(&self) -> bool {
+        self.is_straight() && self.is_flush()
+    }
+
+    fn is_royal_flush(&mut self) -> bool {
+        self.faces().sort();
         self.is_flush() && self.faces()[0] == Face::Ten
     }
 
-    fn handle_straight_or_flush(&self) -> Rank {
+    fn handle_straight_or_flush(&mut self) -> Rank {
         if self.is_royal_flush() {
             Rank::RoyalFlush
         } else {
