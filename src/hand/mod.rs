@@ -52,13 +52,14 @@ impl Hand {
 
     pub fn rank(&mut self) -> Rank {
         let mut faces = self.faces();
-        faces.sort();
+        self.sort();
+        // faces.sort();
         let (dedup_hand, dup_hand) = faces.partition_dedup();
         dedup_hand.sort();
         dup_hand.sort();
-
+        // println!("{:#?}", &faces);
         match dup_hand.len() {
-            0 => self.handle_straight_or_flush(),
+            0 => self.handle_straight_or_flush_or_high(),
             1 => {
                 let index = dedup_hand
                     .iter()
@@ -73,7 +74,7 @@ impl Hand {
             }
             2 => self.handle_three_or_pairs(dup_hand.to_vec()),
             3 => self.handle_four_or_full(dup_hand.to_vec()),
-            _ => Rank::HighCard,
+            _ => Rank::HighCard(faces.last().unwrap().to_owned()),
         }
     }
 
@@ -97,7 +98,7 @@ impl Hand {
         self.is_flush() && self.faces()[0] == Face::Ten
     }
 
-    fn handle_straight_or_flush(&mut self) -> Rank {
+    fn handle_straight_or_flush_or_high(&mut self) -> Rank {
         let highest = self.faces().last().unwrap().to_owned();
 
         if self.is_royal_flush() {
@@ -110,7 +111,11 @@ impl Hand {
                     Rank::Straight
                 }
             } else {
-                Rank::Flush(highest)
+                if self.is_flush() {
+                    Rank::Flush(highest)
+                } else {
+                    Rank::HighCard(highest)
+                }
             }
         }
     }

@@ -7,7 +7,7 @@ use crate::card::face::Face;
 #[allow(dead_code)]
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Rank {
-    HighCard,
+    HighCard(Face),
     Pair(Face, Face),
     TwoPairs,
     ThreeOfAKind,
@@ -91,6 +91,17 @@ mod tests {
     }
 
     #[test]
+    fn compare_two_hands7() {
+        let mut player = hand::Hand::from_vec(vec!["2s", "3h", "6h", "7s", "9c"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::HighCard(Face::Nine));
+        let mut opponent = hand::Hand::from_vec(vec!["7h", "3c", "10h", "6h", "9s"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::HighCard(Face::Ten));
+        assert_eq!(opponent_rank > player_rank, true);
+    }
+
+    #[test]
     fn test_sort_ranks() {
         let mut ranks = vec![
             Rank::RoyalFlush,
@@ -103,13 +114,13 @@ mod tests {
             Rank::ThreeOfAKind,
             Rank::TwoPairs,
             Rank::Pair(Face::Ace, Face::Nine),
-            Rank::HighCard,
+            Rank::HighCard(Face::Nine),
         ];
         ranks.sort();
         assert_eq!(
             ranks,
             vec![
-                Rank::HighCard,
+                Rank::HighCard(Face::Nine),
                 Rank::Pair(Face::Ace, Face::Seven),
                 Rank::Pair(Face::Ace, Face::Nine),
                 Rank::TwoPairs,

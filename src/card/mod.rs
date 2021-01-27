@@ -60,7 +60,7 @@ impl Card {
 
 impl PartialOrd for Card {
     fn partial_cmp(&self, other: &Card) -> Option<Ordering> {
-        Some(self.cmp(other))
+        Some(self.face.cmp(&other.face))
     }
 }
 
@@ -75,15 +75,24 @@ mod tests {
     use super::*;
     #[test]
     fn deserialize_card() {
-        let card = Card::from_string("10s");
-        assert_eq!(card, Card::new(Face::Ten, Suit::Spades));
+        let card1 = Card::from_string("10s");
+        let card2 = Card::from_string("7h");
+        let card3 = Card::from_string("3c");
+        let card4 = Card::from_string("6h");
+        let card5 = Card::from_string("9s");
+        assert!(card1 > card5);
+        assert_eq!(card1, Card::new(Face::Ten, Suit::Spades));
+        assert_eq!(card2, Card::new(Face::Seven, Suit::Hearts));
+        assert_eq!(card3, Card::new(Face::Three, Suit::Clubs));
+        assert_eq!(card4, Card::new(Face::Six, Suit::Hearts));
+        assert_eq!(card5, Card::new(Face::Nine, Suit::Spades));
     }
 
     #[test]
     fn test_card_ord() {
         let mut cards = vec![
+            Card::from_string("9h"),
             Card::from_string("Ks"),
-            Card::from_string("As"),
             Card::from_string("10s"),
             Card::from_string("Qs"),
             Card::from_string("Js"),
@@ -92,11 +101,11 @@ mod tests {
         assert_eq!(
             cards,
             vec![
+                Card::from_string("9h"),
                 Card::from_string("10s"),
                 Card::from_string("Js"),
                 Card::from_string("Qs"),
                 Card::from_string("Ks"),
-                Card::from_string("As")
             ]
         )
     }
