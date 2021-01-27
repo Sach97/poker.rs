@@ -15,7 +15,7 @@ pub enum Rank {
     Flush(Face),
     FullHouse,
     FourOfAKind(Face),
-    StraightFlush,
+    StraightFlush(Face),
     RoyalFlush,
 }
 
@@ -29,7 +29,7 @@ mod tests {
     fn compare_two_hands() {
         let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
         let player_rank = player.rank();
-        assert_eq!(player_rank, Rank::StraightFlush);
+        assert_eq!(player_rank, Rank::StraightFlush(Face::Six));
         let mut opponent = hand::Hand::from_vec(vec!["Js", "Qs", "Ks", "As", "10s"]);
         let opponent_rank = opponent.rank();
         assert_eq!(opponent_rank, Rank::RoyalFlush);
@@ -39,7 +39,7 @@ mod tests {
     fn compare_two_hands2() {
         let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
         let player_rank = player.rank();
-        assert_eq!(player_rank, Rank::StraightFlush);
+        assert_eq!(player_rank, Rank::StraightFlush(Face::Six));
         let mut opponent = hand::Hand::from_vec(vec!["As", "Ad", "Ac", "Ah", "Jd"]);
         let opponent_rank = opponent.rank();
         assert_eq!(opponent_rank, Rank::FourOfAKind(Face::Ace));
@@ -62,17 +62,28 @@ mod tests {
         let mut player = hand::Hand::from_vec(vec!["As", "3s", "4s", "8s", "2s"]);
         let player_rank = player.rank();
         assert_eq!(player_rank, Rank::Flush(Face::Ace));
-        let mut opponent = hand::Hand::from_vec(vec!["2h","3h", "5h", "6h", "7h"]);
+        let mut opponent = hand::Hand::from_vec(vec!["2h", "3h", "5h", "6h", "7h"]);
         let opponent_rank = opponent.rank();
         assert_eq!(opponent_rank, Rank::Flush(Face::Seven));
         assert_eq!(player_rank > opponent_rank, true);
     }
 
     #[test]
+    fn compare_two_hands5() {
+        let mut player = hand::Hand::from_vec(vec!["2h", "3h", "4h", "5h", "6h"]);
+        let player_rank = player.rank();
+        assert_eq!(player_rank, Rank::StraightFlush(Face::Six));
+        let mut opponent = hand::Hand::from_vec(vec!["4h", "5h", "6h", "7h", "8h"]);
+        let opponent_rank = opponent.rank();
+        assert_eq!(opponent_rank, Rank::StraightFlush(Face::Eight));
+        assert_eq!(opponent_rank > player_rank, true);
+    }
+
+    #[test]
     fn test_sort_ranks() {
         let mut ranks = vec![
             Rank::RoyalFlush,
-            Rank::StraightFlush,
+            Rank::StraightFlush(Face::Nine),
             Rank::FourOfAKind(Face::Ace),
             Rank::FullHouse,
             Rank::Flush(Face::Nine),
@@ -94,7 +105,7 @@ mod tests {
                 Rank::Flush(Face::Nine),
                 Rank::FullHouse,
                 Rank::FourOfAKind(Face::Ace),
-                Rank::StraightFlush,
+                Rank::StraightFlush(Face::Nine),
                 Rank::RoyalFlush,
             ]
         )

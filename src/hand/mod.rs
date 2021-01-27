@@ -83,18 +83,19 @@ impl Hand {
     }
 
     fn handle_straight_or_flush(&mut self) -> Rank {
+        let highest = self.faces().last().unwrap().to_owned();
         
         if self.is_royal_flush() {
             Rank::RoyalFlush
         } else {
             if self.is_straight() {
                 if self.is_flush() {
-                    Rank::StraightFlush
+                    Rank::StraightFlush(highest)
                 } else {
                     Rank::Straight
                 }
             } else {
-                Rank::Flush(self.faces().last().unwrap().to_owned())
+                Rank::Flush(highest)
             }
         }
     }
@@ -149,7 +150,7 @@ mod tests {
         let mut hand = Hand::from_vec(vec!["5d", "6d", "7d", "8d", "9d"]);
         let rank = hand.rank();
         println!("{:?}", rank);
-        assert_eq!(rank, Rank::StraightFlush);
+        assert_eq!(rank, Rank::StraightFlush(Face::Nine));
     }
 
     #[test]
